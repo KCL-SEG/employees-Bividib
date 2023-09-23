@@ -18,7 +18,7 @@ class FixedContract(Contract):
         return self.hourly_wage * self.hours_worked
     
     def __str__(self):
-        return f"contract of {self.hours_worked} at {self.hourly_wage}/hour"
+        return f"contract of {self.hours_worked} hours at {self.hourly_wage}/hour"
     
 class SalaryContract(Contract):
 
@@ -29,7 +29,7 @@ class SalaryContract(Contract):
         return self.salary
     
     def __str__(self):
-        return f"monthly salaray of {self.salary}"
+        return f"monthly salary of {self.salary}"
 
 
 class Commission(ABC):
