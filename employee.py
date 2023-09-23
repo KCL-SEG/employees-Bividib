@@ -5,7 +5,7 @@ from abc import ABC,abstractmethod
 class Contract (ABC): 
 
     @abstractmethod
-    def calculate(self):
+    def calculate_pay(self):
         pass
 
 class FixedContract(Contract):
@@ -14,22 +14,28 @@ class FixedContract(Contract):
         self.hourly_wage = hourly_wage
         self.hours_worked = hours_worked
 
-    def calculate(self): 
+    def calculate_pay(self): 
         return self.hourly_wage * self.hours_worked
+    
+    def __str__(self):
+        return f"contract of {self.hours_worked} at {self.hourly_wage}/hour"
     
 class SalaryContract(Contract):
 
     def __init__(self,salary):
         self.salary = salary
 
-    def calculate(self):
+    def calculate_pay(self):
         return self.salary
+    
+    def __str__(self):
+        return f"monthly salaray of {self.salary}"
 
 
 class Commission(ABC):
 
     @abstractmethod
-    def calculate(self):
+    def calculate_commission(self):
         pass
 
 class FixedCommission(Commission):
@@ -37,8 +43,11 @@ class FixedCommission(Commission):
     def __init__(self,commission):
         self.commission = commission
 
-    def calculate(self):
+    def calculate_commission(self):
         return self.commission
+    
+    def __str__(self):
+        return f"bonus commission of {self.commission}"
     
 class VaryCommission(Commission):
 
@@ -46,8 +55,11 @@ class VaryCommission(Commission):
         self.contracts_landed = contracts_landed
         self.commission_per_contract = commission_per_contract
 
-    def calculate(self):
+    def calculate_commission(self):
         return self.contracts_landed * self.commission_per_contract
+    
+    def __str__(self):
+        return f"commission for {self.contracts_landed} contract(s) at {self.commission_per_contract}/contract"
 
 class Employee:
     def __init__(self, name, contract:Contract,commission:Commission = None):
@@ -59,13 +71,16 @@ class Employee:
         return self.get_commission()+self.get_contract_pay()
 
     def get_commission(self):
-        return self.commission.calculate() if self.commission else 0
+        return self.commission.calculate_commission() if self.commission else 0
             
     def get_contract_pay(self):
-        return self.contract.calculate()
+        return self.contract.calculate_pay()
 
     def __str__(self):
-        return self.name
+        commission_info = f" and receives a {str(self.commission)}" if self.commission else ""
+        return f"{self.name} works on a {str(self.contract)}{commission_info}. Their total pay is {self.get_pay()}."
+        
+
 
 # Billie works on a monthly salary of 4000.  Their total pay is 4000.
 billie = Employee('Billie',SalaryContract(4000))
